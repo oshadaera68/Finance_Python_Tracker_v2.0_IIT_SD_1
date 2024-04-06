@@ -103,6 +103,7 @@ def add_transaction():
         print("Invalid Value. Please Try Again!!")
 
 
+# viewing all datas
 def view_transactions():
     print("---------------------------------")
     print("|\t\t View Transactions \t\t|")
@@ -110,6 +111,7 @@ def view_transactions():
     pass
 
 
+# update
 def update_transaction():
     print("-------------------------------------")
     print("|\t\t Update Transactions \t\t|")
@@ -128,6 +130,7 @@ def update_transaction():
         print("Invalid Value. Please Try Again!!")
 
 
+# delete
 def delete_transaction():
     print("-------------------------------------")
     print("|\t\t Delete Transactions \t\t|")
@@ -142,6 +145,7 @@ def delete_transaction():
         print("Invalid Value. Please Try Again!!")
 
 
+# showing summary
 def display_summary():
     print("---------------------------------")
     print("|\t\t Display Summary \t\t|")
@@ -150,6 +154,7 @@ def display_summary():
     pass
 
 
+# main menu
 def main_menu(file_name=None):
     # load all transactions in the json file
     load_transactions()
@@ -184,6 +189,7 @@ def main_menu(file_name=None):
             print("Invalid choice. Please try again.")
 
 
+# exiting program
 def exit_the_program():
     exit_choice = input("Did you want to exit the System? [Y/N]: ")
     if exit_choice == "y" or exit_choice == "Y":

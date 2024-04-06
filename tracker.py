@@ -3,7 +3,7 @@
 import json
 
 # initialize the empty directory
-transactions = []
+transactions = {}
 
 
 # file handling
@@ -11,12 +11,14 @@ transactions = []
 def load_transactions():
     global transactions
     try:
-        with open("trans.json", "r") as file:
+        with open("trans.json", "r+") as file:
             json.load(file)
     except FileNotFoundError:
         print("No transactions. Please try again")
     except json.decoder.JSONDecodeError:
-        transactions = []
+        transactions = {}
+
+    # transactions.update()
 
 
 # save the transactions
@@ -24,15 +26,71 @@ def save_transactions():
     # write the data in the json file
     with open("trans.json", "w") as file:
         json.dump(transactions, file)
+        file.write('\n')
 
 
-def read_bulk_transactions_from_file(filename):
-    # Open and read the file, then parse each line to add to the transactions dictionary
+def date_validation(date_text):
+    try:
+        year, month, day = map(int, date_text.split('-'))  # Split the date string and convert parts to integers
+        if month < 1 or month > 12 or day < 1 or day > 31:
+            return False  # Invalid month or day
+        # Check for months with 30 days
+        if month in [4, 6, 9, 11] and day > 30:
+            return False
+        # Check for February
+        if month == 2:
+            if day > 29:
+                return False  # February cannot have more than 29 days
+            if day == 29 and not (year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)):
+                return False  # Not a leap year
+        return True
+    except ValueError:
+        return False
+
+
+def read_bulk_transactions_from_file(file_name):
+    # try:
+    #     filename = input("Enter the filename to read bulk transactions from: ")
+    #     global transactions
+    #     with open(filename, 'r') as file:
+    #         transactions = json.load(file)
+    # except FileNotFoundError:
+    #     print("Not Found")
+    # except json.JSONDecodeError:
+    #     print("Try again..")
     pass
 
 
 # Feature implementations
 def add_transaction():
+    print("---------------------------------")
+    print("|\t\t Add Transaction \t\t|")
+    print("---------------------------------")
+    # inputing data with validation
+    while True:
+        insert_type = input("Enter the type: ")
+        if not insert_type:
+            print("Please Type it!!")
+            continue
+        else:
+            insert_amount = int(input("Enter the amount: "))
+            if insert_amount <= 0:
+                print("Enter the valid amount. Don't type the negative amount.")
+                continue
+            else:
+                insert_date = input("Enter the date: ")
+                if not date_validation(insert_date):
+                    print("Enter the valid date.")
+                    continue
+                break
+
+    add = {"amount": insert_amount, "date": insert_date}
+    if insert_type in transactions:
+        transactions[insert_type].append(add)
+    else:
+        transactions[insert_type] = [add]
+    save_transactions()
+
     enter_choice = input("Transaction Completed. Do you want to add the another Transaction? [Y/N]:")
     if enter_choice == "y" or enter_choice == "Y":
         add_transaction()
@@ -70,7 +128,7 @@ def display_summary():
     pass
 
 
-def main_menu():
+def main_menu(file_name=None):
     # load all transactions in the json file
     load_transactions()
     while True:
@@ -78,24 +136,27 @@ def main_menu():
         print("|\t\t Personal Finance Tracker \t\t|")
         print("-----------------------------------------")
         print("1. Add Transaction")
-        print("2. View Transactions")
-        print("3. Update Transaction")
-        print("4. Delete Transaction")
-        print("5. Display Summary")
-        print("6. Exit")
+        print("2. Read Bulk Transactions")
+        print("3. View Transaction")
+        print("4. Update Transaction")
+        print("5. Delete Transaction")
+        print("7. Display Summary")
+        print("7. Exit")
         choice = input("Enter your choice: ")
 
         if choice == '1':
             add_transaction()
         elif choice == '2':
-            view_transactions()
+            read_bulk_transactions_from_file(file_name)
         elif choice == '3':
-            update_transaction()
+            view_transactions()
         elif choice == '4':
-            delete_transaction()
+            update_transaction()
         elif choice == '5':
-            display_summary()
+            delete_transaction()
         elif choice == '6':
+            display_summary()
+        elif choice == '7':
             exit_the_program()
         else:
             print("Invalid choice. Please try again.")

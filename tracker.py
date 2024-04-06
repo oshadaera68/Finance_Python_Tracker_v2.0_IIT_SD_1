@@ -66,7 +66,7 @@ def add_transaction():
     print("---------------------------------")
     print("|\t\t Add Transaction \t\t|")
     print("---------------------------------")
-    # inputing data with validation
+    # inputting data with validation
     while True:
         insert_type = input("Enter the type: ")
         if not insert_type:
@@ -84,7 +84,10 @@ def add_transaction():
                     continue
                 break
 
+    # adding the transactions
     add = {"amount": insert_amount, "date": insert_date}
+
+    # check the adding transactions for in the transactions dictionary
     if insert_type in transactions:
         transactions[insert_type].append(add)
     else:
@@ -101,10 +104,21 @@ def add_transaction():
 
 
 def view_transactions():
+    print("---------------------------------")
+    print("|\t\t View Transactions \t\t|")
+    print("---------------------------------")
     pass
 
 
 def update_transaction():
+    print("-------------------------------------")
+    print("|\t\t Update Transactions \t\t|")
+    print("-------------------------------------")
+
+    if not transactions:
+        print("No transactions available to update.")
+        return
+
     enter_choice = input("Transaction Completed. Do you want to add the another Transaction? [Y/N]:")
     if enter_choice == "y" or enter_choice == "Y":
         add_transaction()
@@ -115,6 +129,10 @@ def update_transaction():
 
 
 def delete_transaction():
+    print("-------------------------------------")
+    print("|\t\t Delete Transactions \t\t|")
+    print("-------------------------------------")
+
     enter_choice = input("Transaction Completed. Do you want to add the another Transaction? [Y/N]:")
     if enter_choice == "y" or enter_choice == "Y":
         add_transaction()
@@ -125,6 +143,10 @@ def delete_transaction():
 
 
 def display_summary():
+    print("---------------------------------")
+    print("|\t\t Display Summary \t\t|")
+    print("---------------------------------")
+
     pass
 
 

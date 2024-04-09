@@ -11,7 +11,7 @@ transactions = {}
 def load_transactions():
     global transactions
     try:
-        with open("trans.json", "r+") as file:
+        with open("trans.json", "r") as file:
             json.load(file)
     except FileNotFoundError:
         print("No transactions. Please try again")
@@ -108,7 +108,6 @@ def view_transactions():
     print("---------------------------------")
     print("|\t\t View Transactions \t\t|")
     print("---------------------------------")
-    pass
 
 
 # update
@@ -117,13 +116,56 @@ def update_transaction():
     print("|\t\t Update Transactions \t\t|")
     print("-------------------------------------")
 
-    if not transactions:
-        print("No transactions available to update.")
-        return
+    print("All Transactions List")
+    print(str(transactions) + "\n")
 
-    enter_choice = input("Transaction Completed. Do you want to add the another Transaction? [Y/N]:")
+    update_type = input("Enter the Type: ")
+    if update_type != transactions.keys() and len(transactions[update_type]) > 0:
+        print("\nwhat do you want to the update?")
+        print("1. Amount")
+        print("2. Date")
+        print("3. Cancel Update")
+        choice = input("Enter the choice to update: ")
+
+        while True:
+            if choice == "1":
+                while True:
+                    try:
+                        print(f"current amount: {transactions[update_type][0]['amount']}")
+                        amount = int(input("Enter the new Amount: "))
+                        if amount < 0:
+                            print("Amount must be a positive integer.")
+                        else:
+                            break
+                    except ValueError:
+                        print("Invalid Number. Please type the valid number")
+
+                transactions[update_type][0]['amount'] = amount
+                print(amount)
+                break
+
+            elif choice == "2":
+                print(f"current amount: {transactions[update_type][0]['date']}")
+                date = input("Enter the new date (YYYY-MM-DD): ")
+                if not date_validation(date):
+                    print("Invalid Date. Please Try again.")
+                else:
+                    transactions[update_type][0]['date'] = date
+                    print(date)
+                    break
+
+            elif choice == "3":
+                print("Update is canceled.")
+                break
+            else:
+                print("Invalid Choice. Try Again.")
+                break
+
+    save_transactions()
+
+    enter_choice = input("Transaction Completed. Do you want to update the another Transaction? [Y/N]:")
     if enter_choice == "y" or enter_choice == "Y":
-        add_transaction()
+        update_transaction()
     elif enter_choice == "n" or enter_choice == "N":
         main_menu()
     else:
@@ -136,9 +178,18 @@ def delete_transaction():
     print("|\t\t Delete Transactions \t\t|")
     print("-------------------------------------")
 
-    enter_choice = input("Transaction Completed. Do you want to add the another Transaction? [Y/N]:")
+    print("All Transactions List")
+    print(str(transactions) + "\n")
+
+    delete_type = input("Enter the type for delete: ")
+
+
+
+
+
+    enter_choice = input("Transaction Completed. Do you want to delete the another Transaction? [Y/N]:")
     if enter_choice == "y" or enter_choice == "Y":
-        add_transaction()
+        delete_transaction()
     elif enter_choice == "n" or enter_choice == "N":
         main_menu()
     else:
@@ -155,7 +206,7 @@ def display_summary():
 
 
 # main menu
-def main_menu(file_name=None):
+def main_menu():
     # load all transactions in the json file
     load_transactions()
     while True:
@@ -163,25 +214,23 @@ def main_menu(file_name=None):
         print("|\t\t Personal Finance Tracker \t\t|")
         print("-----------------------------------------")
         print("1. Add Transaction")
-        print("2. Read Bulk Transactions")
-        print("3. View Transaction")
-        print("4. Update Transaction")
-        print("5. Delete Transaction")
-        print("7. Display Summary")
+        print("2. View Transaction")
+        print("3. Update Transaction")
+        print("4. Delete Transaction")
+        print("5. Display Summary")
+        print("6. Read Bulk Transactions")
         print("7. Exit")
         choice = input("Enter your choice: ")
 
         if choice == '1':
             add_transaction()
         elif choice == '2':
-            read_bulk_transactions_from_file(file_name)
-        elif choice == '3':
             view_transactions()
-        elif choice == '4':
+        elif choice == '3':
             update_transaction()
-        elif choice == '5':
+        elif choice == '4':
             delete_transaction()
-        elif choice == '6':
+        elif choice == '5':
             display_summary()
         elif choice == '7':
             exit_the_program()

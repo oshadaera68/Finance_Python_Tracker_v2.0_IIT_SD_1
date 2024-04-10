@@ -95,7 +95,7 @@ def add_transaction():
         transactions[insert_type] = [add]
     save_transactions()
 
-    enter_choice = input("Transaction Completed. Do you want to add the another Transaction? [Y/N]:")
+    enter_choice = input("Transaction Completed. Do you want to add the another Transaction? [Y/N]: ")
     if enter_choice == "y" or enter_choice == "Y":
         add_transaction()
     elif enter_choice == "n" or enter_choice == "N":
@@ -166,7 +166,7 @@ def update_transaction():
 
     save_transactions()
 
-    enter_choice = input("Transaction Completed. Do you want to update the another Transaction? [Y/N]:")
+    enter_choice = input("Transaction Completed. Do you want to update the another Transaction? [Y/N]: ")
     if enter_choice == "y" or enter_choice == "Y":
         update_transaction()
     elif enter_choice == "n" or enter_choice == "N":
@@ -185,10 +185,11 @@ def delete_transaction():
     print(str(transactions) + "\n")
 
     delete_type = input("Enter the type for delete: ")
-
+    if delete_type != transactions.keys():
+        del transactions[delete_type]
     save_transactions()
 
-    enter_choice = input("Transaction Completed. Do you want to delete the another Transaction? [Y/N]:")
+    enter_choice = input("Transaction Completed. Do you want to delete the another Transaction? [Y/N]: ")
     if enter_choice == "y" or enter_choice == "Y":
         delete_transaction()
     elif enter_choice == "n" or enter_choice == "N":

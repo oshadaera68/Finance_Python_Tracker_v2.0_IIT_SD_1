@@ -107,11 +107,10 @@ def update_transaction():
 
     # showing list
     print("All Transactions List")
-    # print(str(transactions) + "\n")
 
-    for key_value, value in transactions.items():
+    for key_value, pair_value in transactions.items():
         print(f"{key_value:}")
-        for x, transaction in enumerate(value, 1):
+        for x, transaction in enumerate(pair_value, 1):
             print(f"\t{x}. Amount: {transaction['amount']}, Date: {transaction['date']}")
         print()
 
@@ -119,6 +118,7 @@ def update_transaction():
     update_type = input("Enter the Type: ")
     if update_type != transactions.keys() and len(transactions[update_type]) > 0:
         index_number = int(input("Ënter the index number: ")) - 1
+        # Check if index_number is within the valid range of indices for transactions[update_type]
         if 0 <= index_number < len(transactions[update_type]):
             print("\nwhat do you want to the update?")
             print("1. Amount")

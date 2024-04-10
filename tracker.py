@@ -18,8 +18,6 @@ def load_transactions():
     except json.decoder.JSONDecodeError:
         transactions = {}
 
-    # transactions.update()
-
 
 # save the transactions
 def save_transactions():
@@ -49,15 +47,6 @@ def date_validation(date_text):
 
 
 def read_bulk_transactions_from_file(file_name):
-    # try:
-    #     filename = input("Enter the filename to read bulk transactions from: ")
-    #     global transactions
-    #     with open(filename, 'r') as file:
-    #         transactions = json.load(file)
-    # except FileNotFoundError:
-    #     print("Not Found")
-    # except json.JSONDecodeError:
-    #     print("Try again..")
     pass
 
 
@@ -118,52 +107,61 @@ def update_transaction():
 
     # showing list
     print("All Transactions List")
-    print(str(transactions) + "\n")
+    # print(str(transactions) + "\n")
+
+    for key_value, value in transactions.items():
+        print(f"{key_value:}")
+        for x, transaction in enumerate(value, 1):
+            print(f"\t{x}. Amount: {transaction['amount']}, Date: {transaction['date']}")
+        print()
 
     # input the wanted type
     update_type = input("Enter the Type: ")
     if update_type != transactions.keys() and len(transactions[update_type]) > 0:
-        print("\nwhat do you want to the update?")
-        print("1. Amount")
-        print("2. Date")
-        print("3. Cancel Update")
-        choice = input("Enter the choice to update: ")
+        index_number = int(input("Ënter the index number: ")) - 1
+        if 0 <= index_number < len(transactions[update_type]):
+            print("\nwhat do you want to the update?")
+            print("1. Amount")
+            print("2. Date")
+            print("3. Cancel Update")
+            choice = input("Enter the choice to update: ")
 
-        while True:
-            if choice == "1":
-                while True:
-                    try:
-                        print(f"current amount: {transactions[update_type][0]['amount']}")
-                        amount = int(input("Enter the new Amount: "))
-                        if amount < 0:
-                            print("Amount must be a positive integer.")
-                        else:
-                            break
-                    except ValueError:
-                        print("Invalid Number. Please type the valid number")
+            while True:
+                if choice == "1":
+                    while True:
+                        try:
+                            print(f"current amount: {transactions[update_type][0]['amount']}")
+                            amount = int(input("Enter the new Amount: "))
+                            if amount < 0:
+                                print("Amount must be a positive integer.")
+                            else:
+                                break
+                        except ValueError:
+                            print("Invalid Number. Please type the valid number")
 
-                transactions[update_type][0]['amount'] = amount
-                print(amount)
-                break
-
-            elif choice == "2":
-                print(f"current amount: {transactions[update_type][0]['date']}")
-                date = input("Enter the new date (YYYY-MM-DD): ")
-                if not date_validation(date):
-                    print("Invalid Date. Please Try again.")
-                else:
-                    transactions[update_type][0]['date'] = date
-                    print(date)
+                    transactions[update_type][0]['amount'] = amount
                     break
 
-            elif choice == "3":
-                print("Update is canceled.")
-                main_menu()
-                break
-            else:
-                print("Invalid Choice. Try Again.")
-                main_menu()
-                break
+                elif choice == "2":
+                    print(f"current amount: {transactions[update_type][0]['date']}")
+                    date = input("Enter the new date (YYYY-MM-DD): ")
+                    if not date_validation(date):
+                        print("Invalid Date. Please Try again.")
+                    else:
+                        transactions[update_type][0]['date'] = date
+                        break
+
+                elif choice == "3":
+                    print("Update is canceled.")
+                    main_menu()
+                    break
+                else:
+                    print("Invalid Choice. Try Again.")
+                    main_menu()
+                    break
+        else:
+            print("You typed invalid index. Type the valid index")
+
     else:
         print("Not any Keys in this dictionary. Please add the key and try to update")
         main_menu()

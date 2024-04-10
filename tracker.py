@@ -1,7 +1,6 @@
 # finance tracker v2.0: using dictionaries + json
 # importing json, os module
 import json
-import os
 
 # initialize the empty directory
 transactions = {}
@@ -104,22 +103,24 @@ def add_transaction():
         print("Invalid Value. Please Try Again!!")
 
 
-# viewing all datas
+# viewing all data
 def view_transactions():
     print("---------------------------------")
     print("|\t\t View Transactions \t\t|")
     print("---------------------------------")
 
 
-# update
+# update the data
 def update_transaction():
     print("-------------------------------------")
     print("|\t\t Update Transactions \t\t|")
     print("-------------------------------------")
 
+    # showing list
     print("All Transactions List")
     print(str(transactions) + "\n")
 
+    # input the wanted type
     update_type = input("Enter the Type: ")
     if update_type != transactions.keys() and len(transactions[update_type]) > 0:
         print("\nwhat do you want to the update?")
@@ -163,6 +164,9 @@ def update_transaction():
                 print("Invalid Choice. Try Again.")
                 main_menu()
                 break
+    else:
+        print("Not any Keys in this dictionary. Please add the key and try to update")
+        main_menu()
 
     save_transactions()
 

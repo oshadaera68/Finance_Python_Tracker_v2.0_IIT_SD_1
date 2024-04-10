@@ -83,7 +83,7 @@ def add_transaction():
         transactions[insert_type] = [add]
     save_transactions()
 
-    enter_choice = input("Transaction Completed. Do you want to add the another Transaction? [Y/N]: ")
+    enter_choice = input("Transaction Added. Do you want to add the another Transaction? [Y/N]: ")
     if enter_choice == "y" or enter_choice == "Y":
         add_transaction()
     elif enter_choice == "n" or enter_choice == "N":
@@ -97,6 +97,12 @@ def view_transactions():
     print("---------------------------------")
     print("|\t\t View Transactions \t\t|")
     print("---------------------------------")
+
+    for key_value, pair_value in transactions.items():
+        print(f"{key_value:}")
+        for x, transaction in enumerate(pair_value, 1):
+            print(f"\t{x}. {transaction['amount']}, {transaction['date']}")
+        print()
 
 
 # update the data
@@ -116,7 +122,7 @@ def update_transaction():
 
     # input the wanted type
     update_type = input("Enter the Type: ")
-    if update_type != transactions.keys() and len(transactions[update_type]) > 0:
+    if update_type in transactions.keys() and len(transactions[update_type]) > 0:
         index_number = int(input("Ënter the index number: ")) - 1
         # Check if index_number is within the valid range of indices for transactions[update_type]
         if 0 <= index_number < len(transactions[update_type]):
@@ -160,15 +166,14 @@ def update_transaction():
                     main_menu()
                     break
         else:
-            print("You typed invalid index. Type the valid index")
-
+            print("You typed invalid index. Type the valid index number.")
     else:
-        print("Not any Keys in this dictionary. Please add the key and try to update")
+        print("Not any Keys in this dictionary. Please add the key and try to update.")
         main_menu()
 
     save_transactions()
 
-    enter_choice = input("Transaction Completed. Do you want to update the another Transaction? [Y/N]: ")
+    enter_choice = input("Transaction Updated. Do you want to update the another Transaction? [Y/N]: ")
     if enter_choice == "y" or enter_choice == "Y":
         update_transaction()
     elif enter_choice == "n" or enter_choice == "N":
@@ -188,10 +193,10 @@ def delete_transaction():
 
     delete_type = input("Enter the type for delete: ")
     if delete_type != transactions.keys():
-        del transactions[delete_type]
+        del transactions[delete_type]  # delete all data in the type dictionary
     save_transactions()
 
-    enter_choice = input("Transaction Completed. Do you want to delete the another Transaction? [Y/N]: ")
+    enter_choice = input("Transaction Removed. Do you want to delete the another Transaction? [Y/N]: ")
     if enter_choice == "y" or enter_choice == "Y":
         delete_transaction()
     elif enter_choice == "n" or enter_choice == "N":

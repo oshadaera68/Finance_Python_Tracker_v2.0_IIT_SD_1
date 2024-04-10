@@ -70,7 +70,7 @@ def add_transaction():
     # inputting data with validation
     while True:
         insert_type = input("Enter the type: ")
-        if not insert_type == int(0):
+        if not insert_type:
             print("Please Type it!!")
             continue
         else:
@@ -157,12 +157,10 @@ def update_transaction():
 
             elif choice == "3":
                 print("Update is canceled.")
-                clr()
                 main_menu()
                 break
             else:
                 print("Invalid Choice. Try Again.")
-                clr()
                 main_menu()
                 break
 
@@ -187,6 +185,8 @@ def delete_transaction():
     print(str(transactions) + "\n")
 
     delete_type = input("Enter the type for delete: ")
+
+    save_transactions()
 
     enter_choice = input("Transaction Completed. Do you want to delete the another Transaction? [Y/N]:")
     if enter_choice == "y" or enter_choice == "Y":
@@ -255,13 +255,3 @@ def exit_the_program():
 # runnable main constructor
 if __name__ == "__main__":
     main_menu()
-
-
-def clr():
-    os.system('clr' if os.name == 'nt' else 'clear')
-
-
-while True:
-    a = input()
-    if a == "clear":
-        clr()

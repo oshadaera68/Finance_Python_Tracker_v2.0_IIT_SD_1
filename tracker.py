@@ -1,5 +1,5 @@
 # finance tracker v2.0: using dictionaries + json
-# importing json, os module
+# importing json module
 import json
 
 # initialize the empty directory
@@ -101,7 +101,9 @@ def view_transactions():
     for key_value, pair_value in transactions.items():
         print(f"{key_value:}")
         for x, transaction in enumerate(pair_value, 1):
+            print("-" * 25)
             print(f"\t{x}. {transaction['amount']}, {transaction['date']}")
+            print("-" * 25)
         print()
 
 
@@ -192,7 +194,7 @@ def delete_transaction():
     print(str(transactions) + "\n")
 
     delete_type = input("Enter the type for delete: ")
-    if delete_type != transactions.keys():
+    if delete_type in transactions.keys():
         del transactions[delete_type]  # delete all data in the type dictionary
     save_transactions()
 
@@ -210,8 +212,19 @@ def display_summary():
     print("---------------------------------")
     print("|\t\t Display Summary \t\t|")
     print("---------------------------------")
-
-    pass
+    total_exp = 0
+    for keys, pairs in transactions.items():
+        print("-----------------------------")
+        print(f"|\t\t\t {keys} \t\t\t|")
+        print("-----------------------------")
+        total_cate = 0
+        for trans in pairs:
+            net_amount = trans.get('amount', 0)  # Get the amount, default to 0 if not found
+            print(f"Net Expense: {net_amount}")
+            total_cate += net_amount # Add amount to category total
+        print(f"Total Expense for {keys}: {total_cate}")
+        total_exp += total_cate  # Add category total to overall total
+        print()
 
 
 # main menu

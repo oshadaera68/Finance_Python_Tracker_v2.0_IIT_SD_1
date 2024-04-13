@@ -47,7 +47,19 @@ def date_validation(date_text):
 
 
 def read_bulk_transactions_from_file(file_name):
-    pass
+    file_name = file_name + ".txt"
+    try:
+        with open(file_name, 'r') as file:
+            for line in file:
+                lines = line.split()
+                add = {"amount": lines[1], "date": lines[2]}
+                if lines[0] in transactions:
+                    transactions[lines[0]].append(add)
+                else:
+                    transactions[lines[0]] = [add]
+            save_transactions()
+    except FileNotFoundError:
+        print(f"{file_name} is Not found.")
 
 
 # Feature implementations
@@ -99,12 +111,9 @@ def view_transactions():
     print("---------------------------------")
 
     for key_value, pair_value in transactions.items():
-        print(f"{key_value:}")
-        for x, transaction in enumerate(pair_value, 1):
-            print("-" * 25)
-            print(f"\t{x}. {transaction['amount']}, {transaction['date']}")
-            print("-" * 25)
-        print()
+        print(f"{key_value}:")
+        for index, transaction in enumerate(pair_value, 1):
+            print(f"\t{index}. {transaction['amount']} {transaction['date']}")
 
 
 # update the data
@@ -119,7 +128,7 @@ def update_transaction():
     for key_value, pair_value in transactions.items():
         print(f"{key_value:}")
         for x, transaction in enumerate(pair_value, 1):
-            print(f"\t{x}. Amount: {transaction['amount']}, Date: {transaction['date']}")
+            print(f"\t{x}. Amount: {transaction['amount']} Date: {transaction['date']}")
         print()
 
     # input the wanted type
@@ -221,10 +230,11 @@ def display_summary():
         for trans in pairs:
             net_amount = trans.get('amount', 0)  # Get the amount, default to 0 if not found
             print(f"Net Expense: {net_amount}")
-            total_cate += net_amount # Add amount to category total
+            total_cate += net_amount  # Add amount to category total
         print(f"Total Expense for {keys}: {total_cate}")
         total_exp += total_cate  # Add category total to overall total
         print()
+    print("Total Expense for all categories:", total_exp)
 
 
 # main menu
@@ -254,6 +264,9 @@ def main_menu():
             delete_transaction()
         elif choice == '5':
             display_summary()
+        elif choice == '6':
+            file = input("Input File Name: ")
+            read_bulk_transactions_from_file(file)
         elif choice == '7':
             exit_the_program()
         else:

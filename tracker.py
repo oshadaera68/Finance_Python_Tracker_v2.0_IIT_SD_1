@@ -176,6 +176,7 @@ def update_transaction():
                         transactions[update_type][0]['date'] = date
                         break
 
+                # cancelling updates
                 elif choice == "3":
                     print("Update is canceled.")
                     main_menu()

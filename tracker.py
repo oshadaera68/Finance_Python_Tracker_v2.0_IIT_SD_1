@@ -129,7 +129,6 @@ def update_transaction():
         print(f"{key_value:}")
         for x, transaction in enumerate(pair_value, 1):
             print(f"\t{x}. Amount: {transaction['amount']} Date: {transaction['date']}")
-        print()
 
     # input the wanted type
     update_type = input("Enter the Type: ")
@@ -200,7 +199,10 @@ def delete_transaction():
     print("-------------------------------------")
 
     print("All Transactions List")
-    print(str(transactions) + "\n")
+    for key_value, pair_value in transactions.items():
+        print(f"{key_value:}")
+        for x, transaction in enumerate(pair_value, 1):
+            print(f"\t{x}. Amount: {transaction['amount']} Date: {transaction['date']}")
 
     delete_type = input("Enter the type for delete: ")
     if delete_type in transactions.keys():

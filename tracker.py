@@ -19,7 +19,7 @@ def load_transactions():
         transactions = {}
 
 
-# save the transactions
+# save the transactions into file
 def save_transactions():
     # write the data in the json file
     with open("trans.json", "w") as file:
@@ -27,6 +27,7 @@ def save_transactions():
         file.write('\n')
 
 
+# date validation
 def date_validation(date_text):
     try:
         year, month, day = map(int, date_text.split('-'))  # Split the date string and convert parts to integers
@@ -46,12 +47,16 @@ def date_validation(date_text):
         return False
 
 
+# read bulk lines
 def read_bulk_transactions_from_file(file_name):
     file_name = file_name + ".txt"
     try:
+        # open the file
         with open(file_name, 'r') as file:
-            for line in file:
-                lines = line.split()
+            for line in file:  # iterate the line by line in the txt file
+                lines = line.split()  # splitting the all lines in the txt file
+
+                # same logic of add transaction
                 add = {"amount": lines[1], "date": lines[2]}
                 if lines[0] in transactions:
                     transactions[lines[0]].append(add)
@@ -71,7 +76,7 @@ def add_transaction():
     while True:
         insert_type = input("Enter the type: ")
         if not insert_type:
-            print("Please Type it!!")
+            print("Please input the type..")
             continue
         else:
             insert_amount = int(input("Enter the amount: "))
@@ -81,7 +86,7 @@ def add_transaction():
             else:
                 insert_date = input("Enter the date: ")
                 if not date_validation(insert_date):
-                    print("Enter the valid date.")
+                    print("Invalid date format. Please enter valid date in YYYY-MM-DD format.")
                     continue
                 break
 
@@ -90,9 +95,9 @@ def add_transaction():
 
     # check the adding transactions for in the transactions dictionary
     if insert_type in transactions:
-        transactions[insert_type].append(add)
+        transactions[insert_type].append(add)  # If you added new transaction, it works
     else:
-        transactions[insert_type] = [add]
+        transactions[insert_type] = [add]  # same type, adding the new value
     save_transactions()
 
     enter_choice = input("Transaction Added. Do you want to add the another Transaction? [Y/N]: ")
@@ -110,10 +115,10 @@ def view_transactions():
     print("|\t\t View Transactions \t\t|")
     print("---------------------------------")
 
-    for key_value, pair_value in transactions.items():
-        print(f"{key_value}:")
-        for index, transaction in enumerate(pair_value, 1):
-            print(f"\t{index}. {transaction['amount']} {transaction['date']}")
+    for key_value, pair_value in transactions.items():  # iterating all items in transaction dictionary
+        print(f"{key_value}:")  # print the all key values
+        for index, transaction in enumerate(pair_value, 1):  # enumerating the all pair values and value
+            print(f"\t{index}. {transaction['amount']} {transaction['date']}")  # print the formatted data
 
 
 # update the data
@@ -122,16 +127,17 @@ def update_transaction():
     print("|\t\t Update Transactions \t\t|")
     print("-------------------------------------")
 
-    # showing list
+    # Showing All Transactions
     print("All Transactions List")
 
-    for key_value, pair_value in transactions.items():
-        print(f"{key_value:}")
-        for x, transaction in enumerate(pair_value, 1):
-            print(f"\t{x}. Amount: {transaction['amount']} Date: {transaction['date']}")
+    for key_value, pair_value in transactions.items():  # iterating all items in transaction dictionary
+        print(f"{key_value:}")  # print the all key values
+        for x, transaction in enumerate(pair_value, 1):  # enumerating the all pair values and value
+            print(f"\t{x}. Amount: {transaction['amount']} Date: {transaction['date']}")  # print the formatted data
 
     # input the wanted type
     update_type = input("Enter the Type: ")
+    # check the update type in the transactions dict
     if update_type in transactions.keys() and len(transactions[update_type]) > 0:
         index_number = int(input("Ënter the index number: ")) - 1
         # Check if index_number is within the valid range of indices for transactions[update_type]
@@ -142,10 +148,12 @@ def update_transaction():
             print("3. Cancel Update")
             choice = input("Enter the choice to update: ")
 
+            # updating process
             while True:
                 if choice == "1":
                     while True:
                         try:
+                            # print the current value in the amount
                             print(f"current amount: {transactions[update_type][0]['amount']}")
                             amount = int(input("Enter the new Amount: "))
                             if amount < 0:
@@ -155,6 +163,7 @@ def update_transaction():
                         except ValueError:
                             print("Invalid Number. Please type the valid number")
 
+                    # new value updating to current value
                     transactions[update_type][0]['amount'] = amount
                     break
 
@@ -162,7 +171,7 @@ def update_transaction():
                     print(f"current amount: {transactions[update_type][0]['date']}")
                     date = input("Enter the new date (YYYY-MM-DD): ")
                     if not date_validation(date):
-                        print("Invalid Date. Please Try again.")
+                        print("Invalid date format. Please enter valid date in YYYY-MM-DD format.")
                     else:
                         transactions[update_type][0]['date'] = date
                         break
@@ -199,14 +208,15 @@ def delete_transaction():
     print("-------------------------------------")
 
     print("All Transactions List")
-    for key_value, pair_value in transactions.items():
-        print(f"{key_value:}")
-        for x, transaction in enumerate(pair_value, 1):
-            print(f"\t{x}. Amount: {transaction['amount']} Date: {transaction['date']}")
+    for key_value, pair_value in transactions.items():  # iterating all items in transaction dictionary
+        print(f"{key_value:}")  # print the all key values
+        for index, transaction in enumerate(pair_value, 1):  # enumerating the all pair values and value
+            # print the formatted data
+            print(f"\t{index}. Amount: {transaction['amount']} Date: {transaction['date']}")
 
     delete_type = input("Enter the type for delete: ")
-    if delete_type in transactions.keys():
-        del transactions[delete_type]  # delete all data in the type dictionary
+    if delete_type in transactions.keys():  # check the if exists the user inputted type in the transaction dict.
+        del transactions[delete_type]  # delete the type of the dictionary.
     save_transactions()
 
     enter_choice = input("Transaction Removed. Do you want to delete the another Transaction? [Y/N]: ")
@@ -218,25 +228,25 @@ def delete_transaction():
         print("Invalid Value. Please Try Again!!")
 
 
-# showing summary
+# showing all total expenses
 def display_summary():
     print("---------------------------------")
     print("|\t\t Display Summary \t\t|")
     print("---------------------------------")
     total_exp = 0
-    for keys, pairs in transactions.items():
+    for keys, pairs in transactions.items():  # iterating all items
         print("-----------------------------")
         print(f"|\t\t\t {keys} \t\t\t|")
         print("-----------------------------")
         total_cate = 0
-        for trans in pairs:
+        for trans in pairs:  # iterating all items in transaction dictionary
             net_amount = trans.get('amount', 0)  # Get the amount, default to 0 if not found
             print(f"Net Expense: {net_amount}")
             total_cate += net_amount  # Add amount to category total
         print(f"Total Expense for {keys}: {total_cate}")
         total_exp += total_cate  # Add category total to overall total
         print()
-    print("Total Expense for all categories:", total_exp)
+    print("Total Expense for all categories:", total_exp)  # showing the total calculation of expenses
 
 
 # main menu
@@ -256,6 +266,7 @@ def main_menu():
         print("7. Exit")
         choice = input("Enter your choice: ")
 
+        # main menu choices
         if choice == '1':
             add_transaction()
         elif choice == '2':

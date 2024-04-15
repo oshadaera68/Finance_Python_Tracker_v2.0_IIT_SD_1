@@ -202,12 +202,13 @@ def update_transaction():
         print("Invalid Value. Please Try Again!!")
 
 
-# delete
+# delete function
 def delete_transaction():
     print("-------------------------------------")
     print("|\t\t Delete Transactions \t\t|")
     print("-------------------------------------")
 
+    # print all transactions list
     print("All Transactions List")
     for key_value, pair_value in transactions.items():  # iterating all items in transaction dictionary
         print(f"{key_value:}")  # print the all key values
